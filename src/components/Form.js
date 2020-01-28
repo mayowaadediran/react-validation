@@ -4,6 +4,7 @@ import * as changeValues from '../utils/changeValues';
 import { withRouter } from 'react-router-dom';
 import Error from './Error';
 import Button from './Button'
+import Tooltip from './Tooltip';
 
 class Form extends Component {
 
@@ -139,9 +140,10 @@ class Form extends Component {
               onChange={this.handleChange}
               value={name}
             />
+            <Tooltip 
+              tip={'Name must not be less that 2 characters, must include a space and then second name'}
+            />
             {errors.fullName.length > 0 && <Error error={errors.fullName}/>}
-           
-            {/* {errors.fullName.length > 0 && <span className='error'>{errors.fullName}</span>} */}
           </div>
           <div className='form-group'>
             <label htmlFor="email">Email</label>
@@ -151,6 +153,9 @@ class Form extends Component {
               placeholder="email@example.com" 
               onChange={this.handleChange} 
               value={email}
+            />
+            <Tooltip 
+              tip={'Must include a valid email address'}
             />
             {errors.email.length > 0 && <Error error={errors.email}/>}
           </div>
@@ -164,6 +169,9 @@ class Form extends Component {
               value={number}
               maxLength={11}
             />
+            <Tooltip 
+              tip={'Must be a Nigerian Phone number (without +234, e.g. starts with 070..., 080..., 090..., 081, etc, must not be longer or shorter than 11 characters'}
+            />
             {errors.number.length > 0 && <Error error={errors.number}/>}
           </div>
           <div className='form-group'>
@@ -174,6 +182,9 @@ class Form extends Component {
               placeholder = "••••••••••••"
               onChange={this.handleChange}
               value={password}
+              />
+              <Tooltip 
+               tip={'Must contain at least one uppercase character, one number, special character and not shorter than 6 characters'}
               />
             {errors.password.length > 0 && <Error error={errors.password}/>}
           </div>
@@ -186,6 +197,9 @@ class Form extends Component {
               onChange={this.handleChange} 
               value={confirmPassword}
               />
+             <Tooltip 
+              tip={'Must match password field'}
+            />
             {errors.confirmPassword.length > 0 &&<Error error={errors.confirmPassword}/>}
           </div>
           <div className='form-group'>
@@ -197,6 +211,9 @@ class Form extends Component {
               onChange={this.handleChange} 
               value={cardNumber}
               maxLength={19}
+            />
+            <Tooltip 
+              tip={'must match the ‘XXXX XXXX XXXX XXXX’ format, accepts only numbers'}
             />
             {errors.cardNumber.length > 0 && <Error error={errors.cardNumber}/>}
           </div>
@@ -211,6 +228,9 @@ class Form extends Component {
                 value={expiration}
                 maxLength={5}
               />
+              <Tooltip 
+                tip={'Must match MM/YY format, only dates later that 01/20'}
+              />
               {errors.expiration.length > 0 && <Error error={errors.expiration}/>}
             </div>
             <div className='form-group'>
@@ -222,6 +242,9 @@ class Form extends Component {
                 onChange={this.handleChange} 
                 value={pin}
                 maxLength={4}
+                />
+                <Tooltip 
+                  tip={'Should be 4 characters long, only accept numbers'}
                 />
               {errors.pin.length > 0 && <Error error={errors.pin}/>}
             </div>
