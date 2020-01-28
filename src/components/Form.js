@@ -82,12 +82,9 @@ class Form extends Component {
   }
 
   handleSubmit = (event) => {
-    console.log(this.validateForm(this.state.errors))
-    console.log(this.validateFields())
     event.preventDefault();
     if (this.validateForm(this.state.errors) && this.validateFields()) {
-      // this.props.history.push('/dashboard')
-      alert('valid form')
+      this.props.history.push('/dashboard')
     } 
     else {
       alert('Invalid Form')
@@ -99,7 +96,6 @@ class Form extends Component {
     let valid = true
     let values = Object.values(rest)
     values.forEach(function (val) {
-  
       val.length === 0 && (valid = false)
     })
      return valid

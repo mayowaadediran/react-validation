@@ -56,8 +56,14 @@ export const validatePassword = (value) => {
 }
 
 export const validateCardNumber = (value) => {
-  let newValue = value.replace(/\s/g,'')
-  !checkNumberRegex.test(newValue) ? error = 'Must contain only numbers' : error = ''
+  let newValue = value.replace(/\s/g, '')
+  if (value.length < 19) {
+    error= 'Must be 16 digits'
+  } else if (!checkNumberRegex.test(newValue)) {
+    error = 'Must contain only numbers'
+  } else {
+    error = ''
+  }
   return error
 }
 
@@ -68,6 +74,12 @@ export const validateExpiration = (value) => {
 }
 
 export const validatePin = (value) => {
-  !checkNumberRegex.test(value) ? error = 'Must contain only numbers' : error = ''
+  if (value.length < 4) {
+    error = 'Must be 4 number'
+  } else if (!checkNumberRegex.test(value)) {
+    error = 'Must contain only numbers'
+   } else {
+    error = ''
+   } 
   return error
 }
