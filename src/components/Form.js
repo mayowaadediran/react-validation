@@ -1,7 +1,9 @@
-/* eslint-disable no-useless-escape */
 import React, { Component } from 'react';
 import * as validate from '../utils/validate';
-import * as changeValues from '../utils/changeValues'
+import * as changeValues from '../utils/changeValues';
+import { withRouter } from 'react-router-dom';
+import Error from './Error';
+import Button from './Button'
 
 class Form extends Component {
 
@@ -79,20 +81,36 @@ class Form extends Component {
   }
 
   handleSubmit = (event) => {
+    console.log(this.validateForm(this.state.errors))
+    console.log(this.validateFields())
     event.preventDefault();
-    if (this.validateForm(this.state.errors)) {
-      this.props.history.push('/dashboard')
-    } else {
+    if (this.validateForm(this.state.errors) && this.validateFields()) {
+      // this.props.history.push('/dashboard')
+      alert('valid form')
+    } 
+    else {
       alert('Invalid Form')
     }
   }
 
+  validateFields = () => {
+    let {errors, ...rest} = this.state
+    let valid = true
+    let values = Object.values(rest)
+    values.forEach(function (val) {
+  
+      val.length === 0 && (valid = false)
+    })
+     return valid
+  }
+
   validateForm = (errors) => {
-    let valid = true;
+    let errorValid = true;
     Object.values(errors).forEach(
-      (val) => val.length > 0 && (valid = false)
+      (val) => val.length > 0 && (errorValid = false)
     );
-    return valid;
+    
+    return errorValid;
   }
 
   render() {
@@ -107,79 +125,83 @@ class Form extends Component {
       expiration,
       pin
     } = this.state;
+
     return (
-        <div className='form-wrapper'>
-          <h2>Login</h2>
-          <form onSubmit={this.handleSubmit} noValidate>
-            <div className='fullName'>
-              <label htmlFor="fullName">Full Name</label>
-              <input 
-                type='text'
-                name='fullName'
-                placeholder="Name Surname"
-                onChange={this.handleChange}
-                value={name}
+      <div className='form-wrapper'>
+        <h2>Login</h2>
+        <form onSubmit={this.handleSubmit}>
+          <div className='form-group'>
+            <label htmlFor="fullName">Full Name</label>
+            <input 
+              type='text'
+              name='fullName'
+              placeholder="Name Surname"
+              onChange={this.handleChange}
+              value={name}
+            />
+            {errors.fullName.length > 0 && <Error error={errors.fullName}/>}
+           
+            {/* {errors.fullName.length > 0 && <span className='error'>{errors.fullName}</span>} */}
+          </div>
+          <div className='form-group'>
+            <label htmlFor="email">Email</label>
+            <input 
+              type='email' 
+              name='email'
+              placeholder="email@example.com" 
+              onChange={this.handleChange} 
+              value={email}
+            />
+            {errors.email.length > 0 && <Error error={errors.email}/>}
+          </div>
+          <div className='form-group'>
+            <label htmlFor="number">Phone Number</label>
+            <input 
+              type='text' 
+              name='number'
+              placeholder = "070XXXXXXX"
+              onChange={this.handleChange} 
+              value={number}
+              maxLength={11}
+            />
+            {errors.number.length > 0 && <Error error={errors.number}/>}
+          </div>
+          <div className='form-group'>
+            <label htmlFor="password">Password</label>
+            <input 
+              type='password' 
+              name='password'
+              placeholder = "••••••••••••"
+              onChange={this.handleChange}
+              value={password}
               />
-              {errors.fullName.length > 0 && <span className='error'>{errors.fullName}</span>}
-            </div>
-            <div className='fullName'>
-              <label htmlFor="email">Email</label>
-              <input 
-                type='email' 
-                name='email'
-                placeholder="email@example.com" 
-                onChange={this.handleChange} 
-                value={email}
+            {errors.password.length > 0 && <Error error={errors.password}/>}
+          </div>
+          <div className='form-group'>
+            <label htmlFor="confirmPassword">Confirm Password</label>
+            <input 
+              type='password' 
+              name='confirmPassword'
+              placeholder = "••••••••••••"
+              onChange={this.handleChange} 
+              value={confirmPassword}
               />
-              {errors.email.length > 0 && <span className='error'>{errors.email}</span>}
-            </div>
-            <div className='email'>
-              <label htmlFor="number">Phone Number</label>
-              <input 
-                type='text' 
-                name='number'
-                placeholder = "070XXXXXXX"
-                onChange={this.handleChange} 
-                value={number}
-                maxLength={11}
-              />
-              {errors.number.length > 0 && <span className='error'>{errors.number}</span>}
-            </div>
-            <div className='password'>
-              <label htmlFor="password">Password</label>
-              <input 
-                type='password' 
-                name='password'
-                placeholder = "••••••••••••"
-                onChange={this.handleChange}
-                value={password}
-                />
-              {errors.password.length > 0 && <span className='error'>{errors.password}</span>}
-            </div>
-            <div className='password'>
-              <label htmlFor="confirmPassword">Confirm Password</label>
-              <input 
-                type='password' 
-                name='confirmPassword'
-                placeholder = "••••••••••••"
-                onChange={this.handleChange} 
-                value={confirmPassword}
-                />
-              {errors.confirmPassword.length > 0 && <span className='error'>{errors.confirmPassword}</span>}
-            </div>
-            <div className='password'>
-              <label htmlFor="cardNumber">Credit/Debit Card Number</label>
-              <input 
-                type='text' 
-                name='cardNumber'
-                placeholder = "•••• •••• •••• ••••"
-                onChange={this.handleChange} 
-                value={cardNumber}
-                maxLength={19}
-              />
-              {errors.cardNumber.length > 0 && <span className='error'>{errors.cardNumber}</span>}
-            </div>
-            <div className='password'>
+            {errors.confirmPassword.length > 0 &&<Error error={errors.confirmPassword}/>}
+          </div>
+          <div className='form-group'>
+            <label htmlFor="cardNumber">Credit/Debit Card Number</label>
+            <input 
+              type='text' 
+              name='cardNumber'
+              placeholder = "•••• •••• •••• ••••"
+              onChange={this.handleChange} 
+              value={cardNumber}
+              maxLength={19}
+            />
+            {errors.cardNumber.length > 0 && <Error error={errors.cardNumber}/>}
+          </div>
+          <div className='card-security'>
+            <div className='form-group'>
               <label htmlFor="expiration">Card Expiration</label>
               <input 
                 type='text' 
@@ -189,9 +211,9 @@ class Form extends Component {
                 value={expiration}
                 maxLength={5}
               />
-              {errors.expiration.length > 0 && <span className='error'>{errors.expiration}</span>}
+              {errors.expiration.length > 0 && <Error error={errors.expiration}/>}
             </div>
-            <div className='password'>
+            <div className='form-group'>
               <label htmlFor="pin">Pin</label>
               <input 
                 type='password' 
@@ -201,15 +223,17 @@ class Form extends Component {
                 value={pin}
                 maxLength={4}
                 />
-              {errors.pin.length > 0 && <span className='error'>{errors.pin}</span>}
+              {errors.pin.length > 0 && <Error error={errors.pin}/>}
             </div>
-            <div className='submit'>
-              <button disabled={!this.validateForm(this.state.errors)}>Submit</button>
-            </div>
-          </form>
-        </div>
+          </div>
+          <Button 
+            text="Submit"
+            disabled={!(this.validateForm(this.state.errors) && this.validateFields())}
+          />
+        </form>
+      </div>
     );
   }
 }
 
-export default Form;
+export default withRouter(Form);
