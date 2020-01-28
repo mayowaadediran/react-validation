@@ -108,7 +108,6 @@ class Form extends Component {
       pin
     } = this.state;
     return (
-      <div className='wrapper'>
         <div className='form-wrapper'>
           <h2>Login</h2>
           <form onSubmit={this.handleSubmit} noValidate>
@@ -209,7 +208,6 @@ class Form extends Component {
             </div>
           </form>
         </div>
-      </div>
     );
   }
 }

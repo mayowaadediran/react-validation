@@ -1,8 +1,7 @@
 import React from 'react';
 import { Switch, Route } from "react-router-dom";
-import Form from './components/Form'
-
-import Dashboard from './components/Dashboard'
+import Landing from './pages/Landing'
+import Dashboard from './pages/Dashboard'
 import './App.css';
 
 const App = () => {
@@ -10,7 +9,7 @@ const App = () => {
     <div>
       <Switch>
         <Route exact path="/dashboard" component={Dashboard} />
-        <Route exact path="/" component={Form} />
+        <Route exact path="/" component={Landing} />
       </Switch>
     </div>
   );

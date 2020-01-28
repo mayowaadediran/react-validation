@@ -1,4 +1,6 @@
-
+* {
+  box-sizing: border-box;
+}
 
 p, div {
   font-family: Lato;
@@ -110,4 +112,30 @@ button:hover {
   width: 100%;
   display: flex;
   flex-wrap: wrap;
+}
+
+
+.dashboard, 
+.landing {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(to right, #070f5c, #004e92);
+  height: 100vh;
+}
+
+.welcome-card {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #ffffff;
+  width: 50%;
+  height: 50%;
+  border-radius: 20px;
+  box-shadow: 10px 10px 28px 3px rgba(0, 0, 0, 0.75)
+}
+
+.welcome-card h1 {
+  font-weight: 200;
+  color: #16b9a3
 }
