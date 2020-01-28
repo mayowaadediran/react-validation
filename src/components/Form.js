@@ -1,8 +1,7 @@
 /* eslint-disable no-useless-escape */
 import React, { Component } from 'react';
 import * as validate from '../utils/validate';
-import * as formatValues from '../utils/formatValues'
-
+import * as changeValues from '../utils/changeValues'
 
 class Form extends Component {
 
@@ -27,7 +26,6 @@ class Form extends Component {
       }
   };
 
-  
   handleChange = (event) => {
     event.preventDefault();
     const { name, value } = event.target;
@@ -47,10 +45,7 @@ class Form extends Component {
         errors.password = validate.validatePassword(value)
         break;
       case 'confirmPassword':
-        errors.confirmPassword = 
-        value !== this.state.password 
-        ? 'Must match password field'
-        : ''
+        errors.confirmPassword = value !== this.state.password ? 'Must match password field' : ''
       break;
       case 'cardNumber':
         errors.cardNumber = validate.validateCardNumber(value)
@@ -58,21 +53,22 @@ class Form extends Component {
       case 'expiration':
         errors.expiration = validate.validateExpiration(value)
       break;
+      case 'pin': 
+        errors.pin = validate.validatePin(value)
+      break;
       default:
         break;
     }
 
     if (name === 'cardNumber' && value.length > 1) {
-      let newValue = formatValues.formatCardNumber(value)
       this.setState({
         errors,
-        [name]: newValue
+        [name]: changeValues.changeCardNumber(value)
       })
     } else if (name === 'expiration' && value.length > 0) {
-      let newValue = formatValues.formatDate(value)
       this.setState({
         errors,
-        [name]: newValue
+        [name]: changeValues.changeDate(value)
       })
     } else {
       this.setState({
@@ -84,10 +80,10 @@ class Form extends Component {
 
   handleSubmit = (event) => {
     event.preventDefault();
-    if(this.validateForm(this.state.errors)) {
-      console.info('Valid Form')
-    }else{
-      console.error('Invalid Form')
+    if (this.validateForm(this.state.errors)) {
+      this.props.history.push('/dashboard')
+    } else {
+      alert('Invalid Form')
     }
   }
 
@@ -98,112 +94,118 @@ class Form extends Component {
     );
     return valid;
   }
+
   render() {
-    const {errors} = this.state;
+    const {
+      errors,
+      name,
+      email,
+      number,
+      password,
+      confirmPassword,
+      cardNumber,
+      expiration,
+      pin
+    } = this.state;
     return (
       <div className='wrapper'>
         <div className='form-wrapper'>
           <h2>Login</h2>
           <form onSubmit={this.handleSubmit} noValidate>
             <div className='fullName'>
-              <label htmlFor="fullName">
-                Full Name
-              </label>
+              <label htmlFor="fullName">Full Name</label>
               <input 
                 type='text'
                 name='fullName'
-                placeholder=""
+                placeholder="Name Surname"
                 onChange={this.handleChange}
-                value={this.state.name}
+                value={name}
               />
               {errors.fullName.length > 0 && <span className='error'>{errors.fullName}</span>}
             </div>
-            <div className='email'>
-              <label htmlFor="email">
-                Email
-              </label>
+            <div className='fullName'>
+              <label htmlFor="email">Email</label>
               <input 
                 type='email' 
                 name='email'
                 placeholder="email@example.com" 
                 onChange={this.handleChange} 
-                value={this.state.email}
+                value={email}
               />
               {errors.email.length > 0 && <span className='error'>{errors.email}</span>}
             </div>
             <div className='email'>
-              <label htmlFor="number">
-                Phone Number
-              </label>
+              <label htmlFor="number">Phone Number</label>
               <input 
                 type='text' 
                 name='number'
-                placeholder = "email@example.com"
+                placeholder = "070XXXXXXX"
                 onChange={this.handleChange} 
-                value={this.state.number}
+                value={number}
                 maxLength={11}
               />
               {errors.number.length > 0 && <span className='error'>{errors.number}</span>}
             </div>
             <div className='password'>
-              <label htmlFor="password">
-                Password
-              </label>
+              <label htmlFor="password">Password</label>
               <input 
                 type='password' 
                 name='password'
-                placeholder = "email@example.com"
+                placeholder = "••••••••••••"
                 onChange={this.handleChange}
-                value={this.state.password}
+                value={password}
                 />
-              {errors.password.length > 0 && 
-                <span className='error'>{errors.password}</span>}
+              {errors.password.length > 0 && <span className='error'>{errors.password}</span>}
             </div>
             <div className='password'>
               <label htmlFor="confirmPassword">Confirm Password</label>
               <input 
                 type='password' 
-                name='confirmPassword' 
+                name='confirmPassword'
+                placeholder = "••••••••••••"
                 onChange={this.handleChange} 
-                value={this.state.confirmPassword}
+                value={confirmPassword}
                 />
               {errors.confirmPassword.length > 0 && <span className='error'>{errors.confirmPassword}</span>}
             </div>
             <div className='password'>
               <label htmlFor="cardNumber">Credit/Debit Card Number</label>
-              <input type='text' 
-                name='cardNumber' 
+              <input 
+                type='text' 
+                name='cardNumber'
+                placeholder = "•••• •••• •••• ••••"
                 onChange={this.handleChange} 
-                value={this.state.cardNumber}
+                value={cardNumber}
                 maxLength={19}
               />
-              {errors.cardNumber.length > 0 && 
-                <span className='error'>{errors.cardNumber}</span>}
+              {errors.cardNumber.length > 0 && <span className='error'>{errors.cardNumber}</span>}
             </div>
             <div className='password'>
               <label htmlFor="expiration">Card Expiration</label>
-              <input type='text' 
-                name='expiration' 
+              <input 
+                type='text' 
+                name='expiration'
+                placeholder="MM/YY"
                 onChange={this.handleChange} 
-                value={this.state.expiration}
+                value={expiration}
                 maxLength={5}
               />
-              {errors.expiration.length > 0 && 
-                <span className='error'>{errors.expiration}</span>}
+              {errors.expiration.length > 0 && <span className='error'>{errors.expiration}</span>}
             </div>
             <div className='password'>
               <label htmlFor="pin">Pin</label>
               <input 
                 type='password' 
-                name='pin' 
+                name='pin'
+                placeholder='••••' 
                 onChange={this.handleChange} 
-                value={this.state.pin}
+                value={pin}
                 maxLength={4}
                 />
               {errors.pin.length > 0 && <span className='error'>{errors.pin}</span>}
             </div>
             <div className='submit'>
-              <button>Submit</button>
+              <button disabled={!this.validateForm(this.state.errors)}>Submit</button>
             </div>
           </form>
         </div>
