@@ -10,7 +10,7 @@ To clone this project, you'll need node installed on your machine. From your com
 $ git clone https://github.com/mayowaadediran/react-validation.git
 
 # Go into the repository
-$ cd react-weather-app
+$ cd react-validaton
 
 # Install dependencies
 $ npm install
